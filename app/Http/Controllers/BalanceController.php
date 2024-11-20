@@ -21,7 +21,7 @@ class BalanceController extends Controller
             'amount' => 'required|numeric',
         ]);
 
-        $balance = Balance::where('user_id', auth()->id())->first();
+        $balance = Balance::firstOrCreate(['user_id' => auth()->id()], ['amount' => 0]);
         $newAmount = $balance->amount + $request->amount;
 
         if ($newAmount < 0) {

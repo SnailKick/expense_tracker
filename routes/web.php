@@ -6,11 +6,18 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
-Route::resource('transactions', TransactionController::class)->middleware('auth');
-Route::resource('categories', CategoryController::class)->middleware('auth');
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('categories', CategoryController::class);
+    Route::resource('transactions', TransactionController::class);
+});
+
+
+
+
 Route::get('/balance', [BalanceController::class, 'index'])->name('balance.index')->middleware('auth');
 Route::post('/balance', [BalanceController::class, 'update'])->name('balance.update')->middleware('auth');
 
